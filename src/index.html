@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather forecast</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>MY WEATHER</h1>
+        <div class="search-box">
+            <input type="text" class="search-bar" placeholder="Search city...">
+            <a href="" class="btn-search"></a>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="">Today</a></li>
+            <li><a href="">5-day forecast</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="current-weather-section">
+            <div class="location-header">
+                <h3>CURRENT WEATHER</h3>
+                <div id="current-weather-location"></div>
+                <div id="current-weather-date"></div>
+            </div>
+            <div class="weather-data-box">
+                
+            </div>
+        </section>
+        <section class="hourly-today-weather-section">
+            <div class="hourly-weather-header">
+                <h3>HOURLY WEATHER</h3>
+            </div>
+            <div class="today-weather-box">
+                <table>
+                    <tr id="today-weather-time-row">
+                        <th>TODAY</th>
+                    </tr>
+                    <tr id="today-weather-forecast-row">
+                        <th>Forecast</th>
+                    </tr>
+                    <tr id="today-weather-temperature-row">
+                        <th>Temp (°C)</th>
+                    </tr>
+                    <tr id="today-weather-realfeel-row">
+                        <th>RealFeel</th>
+                    </tr>
+                    <tr id="today-weather-wind-row">
+                        <th>Wind (km/h)</th>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section class="nearby-places">
+            <div class="nearby-places-header">
+                <h3>NEARBY PLACES</h3>
+            </div>
+            <ul class="nearby-places-list">
+                
+            </ul>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
