@@ -1,29 +1,17 @@
 
 const weatherApiKey = 'b8d0c3223793216f2826446f80f57f88';
-const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/forecast';
+const weatherApiUrl = 'https://api.openweathermap.org/data/2.5/';
 
-const cityApiKey = "pk.74e5addfb02ad9ed9e2d96ef9df5d8de"
-const cityApiUrl = "https://us1.locationiq.com/v1/reverse.php"
-
-async function getCity(latitude, longitude, apiUrl=cityApiUrl, apiKey=cityApiKey) { 
-  const url = `${apiUrl}?key=${apiKey}&lat=${latitude}&lon=${longitude}&format=json`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+async function fetchWeatherData(latitude,longitude, hourly=true,
+  apiUrl=weatherApiUrl, apiKey=weatherApiKey, units='metric') {
+    if (!hourly){
+      apiUrl += `weather?lat=${latitude}&lon=${longitude}&exclude=current, minutely, hourly, alerts&units=${units}&appid=${apiKey}`;
     }
-    const data = await response.json();
-    return `${data.address.city}, ${data.address.country}`;
-  } catch (error) {
-    return null;
-  }
-}
-
-async function fetchWeatherData(city, apiUrl=weatherApiUrl, apiKey=weatherApiKey, units='metric') {
-  const url = `${apiUrl}?q=${city}&units=${units}&appid=${apiKey}`;
+    else{
+      apiUrl += `forecast?lat=${latitude}&lon=${longitude}&units=${units}&appid=${apiKey}`;
+    }
   try {
-    const response = await fetch(url);
+    const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -34,19 +22,32 @@ async function fetchWeatherData(city, apiUrl=weatherApiUrl, apiKey=weatherApiKey
   }
 }
 
+async function getCoordinates() {
+  const coordinates = await new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+  const latitude = coordinates.coords.latitude;
+  const longitude = coordinates.coords.longitude;
+  return [latitude, longitude];
+}
+
 function getWeatherIconPath(iconName){
   return `../assets/icons/${iconName}.png`;
 }
 
-function loadWeatherDataToTable(cityName) {
+async function loadWeatherDataToTable(latitude, longitude, size=6) {
   const timeRow = document.getElementById('today-weather-time-row');
   const forecastRow = document.getElementById('today-weather-forecast-row');
   const tempRow = document.getElementById('today-weather-temperature-row');
   const realFeelRow = document.getElementById('today-weather-realfeel-row');
   const windRow = document.getElementById('today-weather-wind-row');
+  const currentLocation = document.getElementById('current-weather-location');
 
-  fetchWeatherData(cityName).then(data => {
-    data.list.forEach(item => {
+  try{
+    const data = await fetchWeatherData(latitude, longitude);
+    const location = `${data.city.name}, ${data.city.country}`;
+    currentLocation.innerHTML = `<p>${location}</p>`;
+    data.list.slice(0, size).forEach(item => {
       const weather = new HourlyWeather(
         item.dt_txt,
         item.weather[0].icon,
@@ -62,19 +63,18 @@ function loadWeatherDataToTable(cityName) {
       realFeelRow.innerHTML += weather.render_realFeel();
       windRow.innerHTML += weather.render_wind();
     });
-  }).catch(error => {
-    // handleFetchWeatherDataError(error);
+  }
+  catch(error){
     console.log(error);
-  });
+  }
 }
-
 
 
 class HourlyWeather{
     constructor(time, iconName, forecast, temp, realFeel, wind){
         this.time = time;
         this.iconName = iconName;
-        this.temp = forecast;
+        this.forecast = forecast;
         this.temp = temp;
         this.realFeel = realFeel;
         this.wind = wind;
@@ -112,6 +112,7 @@ class HourlyWeather{
     }
 }
 
-function getinfo(){
-  loadWeatherDataToTable("London");
+async function getinfo(){
+  const coordinates = await getCoordinates();
+  await loadWeatherDataToTable(coordinates[0], coordinates[1]);
 }
