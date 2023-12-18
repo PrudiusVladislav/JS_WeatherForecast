@@ -10,8 +10,8 @@
     <header>
         <h1>MY WEATHER</h1>
         <div class="search-box">
-            <input type="text" class="search-bar" placeholder="Search city...">
-            <a href="" class="btn-search"></a>
+            <input type="text" class="search-bar" id="input-city-name" placeholder="Search city...">
+            <button class="btn-search" id="btn-search-by-name">Search</button>
         </div>
     </header>
     <nav>
@@ -36,22 +36,8 @@
                 <h3>HOURLY WEATHER</h3>
             </div>
             <div class="today-weather-box">
-                <table>
-                    <tr id="today-weather-time-row">
-                        <th>TODAY</th>
-                    </tr>
-                    <tr id="today-weather-forecast-row">
-                        <th>Forecast</th>
-                    </tr>
-                    <tr id="today-weather-temperature-row">
-                        <th>Temp (°C)</th>
-                    </tr>
-                    <tr id="today-weather-realfeel-row">
-                        <th>RealFeel</th>
-                    </tr>
-                    <tr id="today-weather-wind-row">
-                        <th>Wind (km/h)</th>
-                    </tr>
+                <table id="hourly-weather-table">
+                   
                 </table>
             </div>
         </section>
@@ -59,11 +45,10 @@
             <div class="nearby-places-header">
                 <h3>NEARBY PLACES</h3>
             </div>
-            <ul class="nearby-places-list">
+            <ul id="nearby-cities-list">
                 
             </ul>
         </section>
-        <button class="btn-load-more" onclick="getinfo()">LOAD</button>
     </main>
     <script src="script.js"></script>
 </body>
