@@ -1,7 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    margin: 0;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -13,7 +14,40 @@ header {
     color: white;
     padding: 20px;
     text-align: center;
-    width: 100%;
+    width: 100vw;
+}
+
+.location-header{
+    display: flex;
+    justify-content: space-between;
+}
+.header-info{
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+#current-weather-location, #current-weather-date{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#today-weather-box{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+#today-temperature{
+    font-size: 45px;
+    font-weight: 500;
+}
+
+#today-temperature-realfeel{
+    font-size: 18px;
+    font-weight: 400;
+    color: #6c757d;
 }
 
 .search-box {
@@ -35,27 +69,22 @@ header {
     text-decoration: none;
 }
 
-/* nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-    background-color: #007BFF;
-    color: white;
-    padding: 20px 0;
-    width: 100%;
-} */
-
 nav {
     background-color: white;
     margin: 20px 0;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 20px auto;
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    justify-content: space-around;
+    gap: 20px;
+    justify-content: center;
     color: #007BFF;
 }
 
@@ -68,19 +97,24 @@ nav ul li a {
     color: #007BFF;
 }
 
-.main {
+main {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 80%;
+    flex-direction: column;
+    align-items: center;
 }
 
 .current-weather-section, .hourly-today-weather-section, .nearby-places {
-    margin: 20px;
+    width: 100%; 
+    margin: 20px 0; 
     padding: 20px;
     background-color: white;
     border-radius: 10px;
     flex: 1;
+}
+
+#hourly-weather-table td{
+    padding: 5px 20px;
+    text-align: center;
 }
 
 .nearby-places {
@@ -93,13 +127,50 @@ nav ul li a {
     list-style-type: none;
     padding: 0;
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
 }
 
 .nearby-city {
     border: 1px solid #ddd;
-    padding: 20px;
-    margin: 20px;
+    padding: 0 35px;
     text-align: center;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nearby-city-forecast-box{
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+.city-name{
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.nearby-city-temperature{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#error-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    width: 85%;
+}
+
+#error-block img {
     width: 80%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 10%;
 }

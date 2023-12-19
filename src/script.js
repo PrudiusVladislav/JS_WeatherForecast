@@ -199,8 +199,10 @@ class HourlyWeather {
   }
 
   render_time() {
+    const date = new Date(this.time);
+    const formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     return `<td class="hourly-weather-time-icon-cell">
-      <p class="hourly-weather-time">${this.time}</p>
+      <p class="hourly-weather-time">${formattedTime}</p>
       <img src="${getWeatherIconPath(this.iconName)}" class="hourly-weather-icon">
       </td>`;
   }
@@ -242,27 +244,19 @@ class TodayWeather {
   }
 
   render() {
-    const options = { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' };
-    const sunriseTime = new Date(this.sunrise).toLocaleTimeString('en-US', options);
-    const sunsetTime = new Date(this.sunset).toLocaleTimeString('en-US', options);
-
-    return `<div class="today-weather-icon">
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    return `<div class="today-weather-forecast">
     <img src="${getWeatherIconPath(this.iconName)}">
-    </div>
-    <div class="today-weather-forecast">
     <p>${this.forecast}</p>
     </div>
     <div class="today-weather-temperature">
-    <p>${this.temp}</p>
+    <p id="today-temperature">${this.temp}°C</p>
+    <p id="today-temperature-realfeel">Real Feel ${this.realFeel}°C</p>
     </div>
-    <div class="today-weather-realFeel">
-    <p>${this.realFeel}</p>
-    </div>
-    <div class="today-weather-sunrise">
-    <p>${sunriseTime}</p>
-    </div>
-    <div class="today-weather-sunset">
-    <p>${sunsetTime}</p>
+    <div class="today-weather-sunrise-sunset">
+    <p>Sunrise: ${new Date(this.sunrise).toLocaleTimeString('en-US', options)}</p>
+    <p>Sunset: ${new Date(this.sunset).toLocaleTimeString('en-US', options)}</p>
+    <p>Duration: ${new Date(this.sunset-this.sunrise).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })}</p>
     </div>`;
   }
 }
@@ -278,8 +272,10 @@ class NearbyCityWeather {
     return `
           <li class="nearby-city">
               <h4 class="city-name">${this.cityName}</h4>
+              <div class="nearby-city-forecast-box">
               <img src="${getWeatherIconPath(this.weatherIcon)}" alt="Weather icon" class="weather-icon">
-              <p class="temperature">${this.temperature}°C</p>
+              <p class="nearby-city-temperature">${this.temperature}°C</p>
+              </div>
           </li>
       `;
   }
@@ -311,6 +307,7 @@ async function loadFromCoordinates() {
   }
   catch(error){
     console.log(error);
+    showErrorPage(error.message);
   }
 }
 
@@ -338,12 +335,58 @@ async function loadFromCityName(cityName) {
   }
   catch(error){
     console.log(error);
+    showErrorPage(error.message);
   }
 }
 
+function showErrorPage(errorText) {
+  const errorPage = document.getElementById('error-block');
+  const errorMessage = document.getElementById('error-message');
+  const pageContent = document.getElementById('page-content');
+  errorPage.style.display = 'block';
+  errorMessage.innerText += `  ${errorText}`;
+  pageContent.style.display = 'none';
+}
+
+function hideErrorPage() {
+  const errorPage = document.getElementById('error-block');
+  const pageContent = document.getElementById('page-content');
+  errorPage.style.display = 'none';
+  pageContent.style.display = 'block';
+}
+
+function showTodayForecast(loadFromName=false){
+  const todayForecast = document.getElementById('today-forecast');
+  const dailyForecast = document.getElementById('daily-forecast');
+  todayForecast.style.display = 'block';
+  dailyForecast.style.display = 'none';
+  if(loadFromName){
+    loadFromCityName(document.getElementById('input-city-name').value);
+  }
+  else{
+    loadFromCoordinates();
+  }
+}
+
+function showDailyForecast(loadFromName=false){
+  // const todayForecast = document.getElementById('today-forecast');
+  // const dailyForecast = document.getElementById('daily-forecast');
+  // todayForecast.style.display = 'none';
+  // dailyForecast.style.display = 'block';
+  // if(loadFromCityName){
+  //   loadDailyForecastFromName(document.getElementById('input-city-name').value);
+  // }
+  // else{
+  //   loadDailyForecastFromCoordinates();
+  // }
+}
+
+
 document.addEventListener('DOMContentLoaded', async function () {
-  await loadFromCoordinates();
+  hideErrorPage();
+  showTodayForecast();
   document.getElementById('btn-search-by-name').addEventListener('click', async function () {
+    hideErrorPage();
     await loadFromCityName(document.getElementById('input-city-name').value);
   });
 });

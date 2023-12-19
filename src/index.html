@@ -16,40 +16,62 @@
     </header>
     <nav>
         <ul>
-            <li><a href="">Today</a></li>
-            <li><a href="">5-day forecast</a></li>
+            <li><a href="" onclick="showTodayForecast()">Today</a></li>
+            <li><a href="" onclick="showDailyForecast()">5-day forecast</a></li>
         </ul>
     </nav>
-    <main>
-        <section class="current-weather-section">
-            <div class="location-header">
-                <h3>CURRENT WEATHER</h3>
-                <div id="current-weather-location"></div>
-                <div id="current-weather-date"></div>
-            </div>
-            <div id="today-weather-box">
-                
-            </div>
-        </section>
-        <section class="hourly-today-weather-section">
-            <div class="hourly-weather-header">
-                <h3>HOURLY WEATHER</h3>
-            </div>
-            <div class="today-weather-box">
-                <table id="hourly-weather-table">
-                   
-                </table>
-            </div>
-        </section>
-        <section class="nearby-places">
-            <div class="nearby-places-header">
-                <h3>NEARBY PLACES</h3>
-            </div>
-            <ul id="nearby-cities-list">
-                
-            </ul>
-        </section>
-    </main>
+    <div id="page-content">
+        <div id="today-forecast">
+            <main>
+                <section class="current-weather-section">
+                    <div class="location-header">
+                        <h3>CURRENT WEATHER</h3>
+                        <div class="header-info">
+                            <div id="current-weather-location"></div>
+                            <div id="current-weather-date"></div>
+                        </div>
+                    </div>
+                    <div id="today-weather-box">
+                        
+                    </div>
+                </section>
+                <section class="hourly-today-weather-section">
+                    <div class="hourly-weather-header">
+                        <h3>HOURLY WEATHER</h3>
+                    </div>
+                    <div class="today-weather-box">
+                        <table id="hourly-weather-table">
+                           
+                        </table>
+                    </div>
+                </section>
+                <section class="nearby-places">
+                    <div class="nearby-places-header">
+                        <h3>NEARBY PLACES</h3>
+                    </div>
+                    <ul id="nearby-cities-list">
+                        
+                    </ul>
+                </section>
+            </main>
+        </div>
+        <div id="daily-forecast">
+            <section class="hourly-today-weather-section">
+                <div class="hourly-weather-header">
+                    <h3>HOURLY WEATHER</h3>
+                </div>
+                <div class="today-weather-box">
+                    <table id="hourly-weather-table">
+                       
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="error-block">
+        <img src="../assets/images/page-not-found-error.jpg" alt="error">
+        <p id="error-message">An error occurred: </p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
